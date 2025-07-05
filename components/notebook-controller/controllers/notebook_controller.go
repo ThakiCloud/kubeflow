@@ -442,13 +442,24 @@ func generateService(instance *v1beta1.Notebook) *corev1.Service {
 	if containerPorts != nil {
 		port = int(containerPorts[0].ContainerPort)
 	}
+
+	serviceType := corev1.ServiceTypeClusterIP
+	if svcType, exists := instance.Annotations["notebooks.kubeflow.org/service-type"]; exists {
+		switch svcType {
+		case "LoadBalancer":
+			serviceType = corev1.ServiceTypeLoadBalancer
+		default:
+			serviceType = corev1.ServiceTypeClusterIP
+		}
+	}
+
 	svc := &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      instance.Name,
 			Namespace: instance.Namespace,
 		},
 		Spec: corev1.ServiceSpec{
-			Type:     "ClusterIP",
+			Type:     serviceType,
 			Selector: map[string]string{"statefulset": instance.Name},
 			Ports: []corev1.ServicePort{
 				{

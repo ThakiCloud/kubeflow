@@ -83,4 +83,14 @@ export interface Config {
     value: string[];
     readOnly?: boolean;
   };
+
+  serviceConfig?: {
+    value: string;
+    readOnly?: boolean;
+    options: {
+      value: string;
+      displayName: string;
+      description: string;
+    }[];
+  };
 }

@@ -8,6 +8,7 @@ metadata:
   annotations:
     notebooks.kubeflow.org/server-type: ""
     notebooks.kubeflow.org/creator: "{creator}"
+    notebooks.kubeflow.org/service-type: ""
 spec:
   template:
     spec:

@@ -10,6 +10,7 @@ log = logging.getLogger(__name__)
 SERVER_TYPE_ANNOTATION = "notebooks.kubeflow.org/server-type"
 HEADERS_ANNOTATION = "notebooks.kubeflow.org/http-headers-request-set"
 URI_REWRITE_ANNOTATION = "notebooks.kubeflow.org/http-rewrite-uri"
+SERVICE_TYPE_ANNOTATION = "notebooks.kubeflow.org/service-type"
 
 
 def get_form_value(body, defaults, body_field, defaults_field=None,
@@ -112,6 +113,12 @@ def set_server_type(notebook, body, defaults):
     if server_type == "group-two":
         notebook_annotations[HEADERS_ANNOTATION] = rstudio_header
 
+def set_service_type(notebook, body, defaults):
+    notebook_annotations = notebook["metadata"]["annotations"]
+    service_type = get_form_value(body, defaults, "serviceType")
+    if service_type == "":
+        service_type == "LoadBalancer"
+    notebook_annotations[SERVICE_TYPE_ANNOTATION] = service_type
 
 def set_notebook_cpu(notebook, body, defaults):
     container = notebook["spec"]["template"]["spec"]["containers"][0]

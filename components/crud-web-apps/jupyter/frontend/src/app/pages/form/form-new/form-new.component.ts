@@ -122,6 +122,11 @@ export class FormNewComponent implements OnInit, OnDestroy {
       notebook.gpus.num = notebook.gpus.num.toString();
     }
 
+    // Handle serviceType - extract the type value from the form group
+    if (notebook.serviceType && typeof notebook.serviceType === 'object') {
+      notebook.serviceType = notebook.serviceType.type;
+    }
+
     // Remove cpuLimit from request if null
     if (notebook.cpuLimit == null) {
       delete notebook.cpuLimit;

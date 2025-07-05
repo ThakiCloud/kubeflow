@@ -25,6 +25,9 @@ export function getFormDefaults(): FormGroup {
       vendor: ['', []],
       num: ['', []],
     }),
+    serviceType: fb.group({
+      type: ['ClusterIP', [Validators.required]],
+    }),
     workspace: fb.group({
       mount: ['/home/jovyan', [Validators.required]],
       newPvc: fb.group({
@@ -157,6 +160,14 @@ export function initFormControls(formCtrl: FormGroup, config: Config) {
 
   // GPUs
   updateGPUControl(formCtrl.get('gpus') as FormGroup, config.gpus);
+
+  // Service Type
+  if (config.serviceConfig) {
+    formCtrl.get('serviceType').get('type').setValue(config.serviceConfig.value);
+    if (config.serviceConfig.readOnly) {
+      formCtrl.get('serviceType').get('type').disable();
+    }
+  }
 
   formCtrl.controls.shm.setValue(config.shm.value);
   if (config.shm.readOnly) {

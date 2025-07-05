@@ -1,0 +1,18 @@
+<lib-form-section title="Service Type" i18n-title>
+  <div class="row" [formGroup]="parentForm.get('serviceType')">
+    <!--Service Type-->
+    <mat-form-field class="column" appearance="outline">
+      <mat-label i18n>Service Type</mat-label>
+      <mat-select matNativeControl formControlName="type">
+        <mat-option
+          *ngFor="let option of serviceTypeOptions"
+          [value]="option.value"
+          [matTooltip]="serviceTypeTooltip(option)"
+        >
+          {{ option.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error>{{ getServiceTypeError() }}</mat-error>
+    </mat-form-field>
+  </div>
+</lib-form-section>
