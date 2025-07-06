@@ -415,6 +415,11 @@ func generateStatefulSet(instance *v1beta1.Notebook) *appsv1.StatefulSet {
 				Name:          "notebook-port",
 				Protocol:      "TCP",
 			},
+			{
+				ContainerPort: 22,
+				Name:          "ssh-port",
+				Protocol:      "TCP",
+			},
 		}
 	}
 
@@ -467,6 +472,13 @@ func generateService(instance *v1beta1.Notebook) *corev1.Service {
 					Name:       "http-" + instance.Name,
 					Port:       DefaultServingPort,
 					TargetPort: intstr.FromInt(port),
+					Protocol:   "TCP",
+				},
+				{
+					// Make port name follow Istio pattern so it can be managed by istio rbac
+					Name:       "ssh-" + instance.Name,
+					Port:       22,
+					TargetPort: intstr.FromInt(22),
 					Protocol:   "TCP",
 				},
 			},
